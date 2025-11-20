@@ -1,45 +1,38 @@
 pipeline {
+    agent any
 
- agent any
-
- tools {
+    tools {
         jdk 'JAVA_HOME'
         maven 'M2_HOME'
+    }
+
+    stages {
+        stage('GIT') {
+            steps {
+                git branch: 'master',
+                    url: 'https://github.com/Maya-Marzouki/DevOps4SIM2.git'
+            }
+        }
+
+        stage('Compile Stage') {
+            steps {
+                sh 'mvn clean compile'
+            }
+        }
+
+        stage('Test Stage') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+
+        stage('Package Stage') {
+            steps {
+                sh 'mvn package'
+            }
+        }
+    }
 }
-
- stages {
-
- stage('GIT') {
-
-           steps {
-
-               git branch: 'master',
-
-               url: 'https://github.com/Maya-Marzouki/DevOps4SIM2.git'
-
-          }
-
-     }
-
- stage ('Compile Stage') {
-
- steps {
-
- sh 'mvn clean compile'
-
- }
-stage ('Test Stage')
- steps {
-
- sh 'mvn test'
-
- }
-stage ('Package Stage') steps {
-
- sh 'mvn package'
-
- }
-
  }
 
  }
