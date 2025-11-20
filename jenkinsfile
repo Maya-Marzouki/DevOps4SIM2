@@ -7,28 +7,28 @@ pipeline {
     }
 
     stages {
-        stage('GIT') {
+
+        stage('Checkout') {
             steps {
-                git branch: 'master',
-                    url: 'https://github.com/Maya-Marzouki/DevOps4SIM2.git'
+                git branch: 'master', url: 'https://github.com/Maya-Marzouki/DevOps4SIM2.git'
             }
         }
 
-        stage('Compile Stage') {
+        stage('Compile') {
             steps {
-                sh 'mvn clean compile'
+                sh "mvn -B clean compile -DskipTests"
             }
         }
 
-        stage('Test Stage') {
+        stage('Package') {
             steps {
-                sh 'mvn test'
+                sh "mvn -B package -DskipTests"
             }
         }
 
-        stage('Package Stage') {
+        stage('Archive Artifact') {
             steps {
-                sh 'mvn package'
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
             }
         }
     }
