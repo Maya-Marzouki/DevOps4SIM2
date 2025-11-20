@@ -1,35 +1,32 @@
 pipeline {
     agent any
 
-    tools {
-        jdk 'JAVA_HOME'
-        maven 'M2_HOME'
-    }
-
     stages {
-
-        stage('Checkout') {
+        stage('GIT') {
             steps {
-                git branch: 'master', url: 'https://github.com/Maya-Marzouki/DevOps4SIM2.git'
+                git url: 'https://github.com/Malekmouelh/devops.git'    
             }
         }
 
-        stage('Compile') {
+        stage('Test Stage') {
             steps {
-                sh "mvn -B clean compile -DskipTests"
+                    sh'mvn test'
             }
         }
 
-        stage('Package') {
+        stage('Package Stage') {
             steps {
-                sh "mvn -B package -DskipTests"
+                sh 'mvn package '
             }
         }
-
-        stage('Archive Artifact') {
-            steps {
-                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
-            }
+    }
+    
+    post {
+        success {
+            echo 'build and tests succeded'
+        }
+        failure {
+            echo 'build failed'
         }
     }
 }
